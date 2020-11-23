@@ -10,7 +10,6 @@ variable "zone" {
 
 variable "project_id" {
   type = string
-  default = "dev1-onb-playground-18fd"
 }
 
 provider "google" {
