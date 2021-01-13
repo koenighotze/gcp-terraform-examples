@@ -1,29 +1,7 @@
-variable "region" {
-  type = string
-  default = "europe-west1"
-}
-
-variable "zone" {
-  type = string
-  default = "europe-west1-c"
-}
-
-variable "project_id" {
-  type = string
-}
-
 provider "google" {
   project     = var.project_id
   region      = var.region
   zone        = var.zone
-}
-
-data "google_compute_zones" "zones" {
-}
-
-data "google_compute_image" "image" {
-  family  = "debian-10"
-  project = "debian-cloud"
 }
 
 resource "google_compute_subnetwork" "subnetwork_a" {
@@ -275,16 +253,4 @@ resource "google_compute_target_http_proxy" "default" {
 resource "google_compute_url_map" "default" {
   name            = "dschmitz-url-map"
   default_service = google_compute_backend_service.default.id
-}
-
-output "internal_web_ip_1" {
-  value = google_compute_instance.nginx1.network_interface.0.network_ip
-}
-
-output "internal_web_ip_2" {
-  value = google_compute_instance.nginx2.network_interface.0.network_ip
-}
-
-output "internal_jump_ip" {
-  value = google_compute_instance.jump.network_interface.0.network_ip
 }
