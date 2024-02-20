@@ -10,6 +10,7 @@ on:
 env:
   TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
   TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
   TF_IN_AUTOMATION: true
   TF_INPUT: false
   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
