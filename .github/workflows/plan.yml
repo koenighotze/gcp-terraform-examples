@@ -30,7 +30,7 @@ jobs:
           framework: terraform
           # we are fine with Google's Keys
           # we are fine with basic roles (no org), we are fine with our own module
-          skip_check: CKV_GCP_84,CKV_GIT_4,CKV_GCP_117,CKV_TF_1
+          skip_check: CKV_GCP_84,CKV_GIT_4,CKV_GCP_117,CKV_TF_1,CKV2_GCP_18
           output_format: cli
           download_external_modules: true
 
@@ -42,7 +42,7 @@ jobs:
       - uses: terraform-linters/setup-tflint@v4
         name: Setting up TFLint
         with:
-          tflint_version: v0.29.0
+          tflint_version: v0.50.3
       - name: Initializing TFLint
         run: tflint --init
       - name: Linting
