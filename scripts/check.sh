@@ -12,8 +12,8 @@ if [[ "${TRACE-0}" == "1" ]]; then set -o xtrace; fi
 source "$(dirname "$0")/common.sh"
 
 tflint --init 
-tflint -f compact --disable-rule=terraform_module_pinned_source --disable-rule=terraform_required_providers 
+tflint -f compact --disable-rule=terraform_module_pinned_source --disable-rule=terraform_required_providers --recursive
 terraform validate -no-color 
 terraform fmt -check -recursive
 
-checkov -d .
+checkov --quiet -d .
