@@ -1,7 +1,0 @@
-environment_tag = "dev"
-billing_code_tag = "ABC123"
-bucket_name_prefix = "globo"
-
-region = "europe-west1"
-zone = "europe-west1-c"
-project_id = ""
