@@ -5,7 +5,6 @@ provider "google" {
 
   default_labels = {
     purpose = "gcp-terraform-training"
-    target  = "ex-03"
   }
 }
 
@@ -16,8 +15,5 @@ provider "google-beta" {
 
   default_labels = {
     purpose = "gcp-terraform-training"
-    target  = "ex-03"
   }
 }
-
-

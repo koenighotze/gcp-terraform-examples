@@ -5,7 +5,6 @@ on:
     paths-ignore:
       - "scripts/**"
     branches: ["main"]
-    tags-ignore: ["**"]
   workflow_dispatch:
 
 env:
@@ -57,7 +56,7 @@ jobs:
       - name: Initializing TFLint
         run: tflint --init
       - name: Linting
-        run: tflint -f compact --disable-rule=terraform_module_pinned_source
+        run: tflint -f compact --disable-rule=terraform_module_pinned_source --recursive
 
   qa:
     runs-on: ubuntu-20.04

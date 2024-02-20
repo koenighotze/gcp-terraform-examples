@@ -1,26 +1,26 @@
 variable "name_prefix" {
-  type = string
+  type    = string
   default = "dschmitz"
 }
 
 variable "billing_code_tag" {
-  type = string
-  default = "abc123"
+  type    = string
+  default = "gcp-training"
 }
 
 variable "environment" {
-  type = string
+  type    = string
   default = "development"
 }
 
 variable "region" {
-  type = string
-  default = "europe-west1"
+  type    = string
+  default = "europe-west3"
 }
 
 variable "zone" {
-  type = string
-  default = "europe-west1-c"
+  type    = string
+  default = "europe-west3-c"
 }
 
 variable "project_id" {
