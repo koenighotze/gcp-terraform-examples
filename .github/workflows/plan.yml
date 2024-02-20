@@ -1,0 +1,107 @@
+name: Plan
+
+on:
+  push:
+    paths-ignore:
+      - "scripts/**"
+    branches: ["main"]
+    tags-ignore: ["**"]
+  workflow_dispatch:
+
+env:
+  TF_VAR_billing_account_id: ${{ secrets.BILLING_ACCOUNT_ID }}
+  TF_VAR_seed_sa_email: ${{ secrets.SEED_SA_EMAIL_ADDRESS }}
+  TF_VAR_github_admin_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  TF_VAR_github_api_label_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  TF_VAR_project_postfix: ${{ secrets.GCP_PROJECT_POSTFIX }}
+  TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
+  TF_VAR_codacy_api_token: ${{ secrets.CODACY_API_TOKEN }}
+  TF_VAR_docker_registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+  TF_VAR_docker_registry_token: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+permissions:
+  id-token: write
+
+jobs:
+  compliance-scan:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12.2641.0
+        with:
+          framework: terraform
+          # we are fine with Google's Keys
+          # we are fine with basic roles (no org), we are fine with our own module
+          skip_check: CKV_GCP_84,CKV_GIT_4,CKV_GCP_117,CKV_TF_1
+          output_format: cli
+          download_external_modules: true
+
+  lint:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+        name: Setting up TFLint
+        with:
+          tflint_version: v0.29.0
+      - name: Initializing TFLint
+        run: tflint --init
+      - name: Linting
+        run: tflint -f compact --disable-rule=terraform_module_pinned_source
+
+  qa:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Authenticating
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+      - name: Setting up GCP environment
+        uses: google-github-actions/setup-gcloud@v2.0.1
+      - run: gcloud projects list
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform Init
+        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+      - name: Terraform Validate
+        run: terraform validate -no-color
+
+  plan:
+    runs-on: ubuntu-20.04
+
+    needs:
+      - qa
+      - lint
+      - compliance-scan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Authenticating
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SEED_SA_EMAIL_ADDRESS }}
+      - name: Setting up GCP environment
+        uses: google-github-actions/setup-gcloud@v2.0.1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Init
+        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+      - name: Plan
+        run: terraform plan -no-color

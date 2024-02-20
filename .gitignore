@@ -32,3 +32,5 @@ override.tf.json
 pkg/
 .idea
 .terraform.lock.hcl
+local.sh
+.vscode
