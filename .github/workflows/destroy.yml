@@ -1,0 +1,36 @@
+name: Destroy
+
+on:
+  workflow_dispatch:
+
+env:
+  TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+permissions:
+  id-token: write
+
+jobs:
+  destroy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Authenticating
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+      - name: Setting up GCP environment
+        uses: google-github-actions/setup-gcloud@v2.0.1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Init
+        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+      - name: Plan
+        run: terraform destroy -auto-approve
