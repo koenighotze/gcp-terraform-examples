@@ -8,20 +8,10 @@ on:
   workflow_dispatch:
 
 env:
-  TF_VAR_billing_account_id: ${{ secrets.BILLING_ACCOUNT_ID }}
-  TF_VAR_seed_sa_email: ${{ secrets.SEED_SA_EMAIL_ADDRESS }}
-  TF_VAR_github_admin_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-  TF_VAR_github_api_label_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-  TF_VAR_project_postfix: ${{ secrets.GCP_PROJECT_POSTFIX }}
   TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
   TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
-  TF_VAR_codacy_api_token: ${{ secrets.CODACY_API_TOKEN }}
-  TF_VAR_docker_registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-  TF_VAR_docker_registry_token: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
   TF_IN_AUTOMATION: true
   TF_INPUT: false
-  GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-  GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
 permissions:
@@ -95,7 +85,7 @@ jobs:
         uses: google-github-actions/auth@v2.1.1
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.SEED_SA_EMAIL_ADDRESS }}
+          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
       - name: Setting up GCP environment
         uses: google-github-actions/setup-gcloud@v2.0.1
       - name: Setup Terraform
