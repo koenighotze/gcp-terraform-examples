@@ -8,7 +8,7 @@ resource "google_compute_subnetwork" "subnetwork" {
   project                  = var.project_id
   region                   = var.region
   name                     = "subnetwork"
-  ip_cidr_range            = "10.0.0.1/16" # todo actually too large
+  ip_cidr_range            = "10.0.0.0/16" # todo actually too large
   network                  = google_compute_network.vpc.id
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true
