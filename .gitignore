@@ -34,3 +34,4 @@ pkg/
 .terraform.lock.hcl
 local.sh
 .vscode
+TODO.txt

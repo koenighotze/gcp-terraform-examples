@@ -12,4 +12,5 @@ if [[ "${TRACE-0}" == "1" ]]; then set -o xtrace; fi
 source "$(dirname "$0")/common.sh"
 
 terraform plan \
-    -var "project_id=$PROJECT" 
+    -var "project_id=$PROJECT" \
+    -var "sa_email=$SA_EMAIL" 
