@@ -32,5 +32,5 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - name: Init
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
-      - name: Plan
+      - name: Destroy
         run: terraform destroy -auto-approve
