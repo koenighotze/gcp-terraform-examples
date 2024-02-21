@@ -19,3 +19,16 @@ resource "google_compute_subnetwork" "subnetwork" {
     metadata             = "INCLUDE_ALL_METADATA"
   }
 }
+
+resource "google_compute_firewall" "firewall" {
+  project = var.project_id
+  name    = "allow-ssh-http"
+  network = google_compute_network.vpc.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "80"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
