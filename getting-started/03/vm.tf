@@ -39,4 +39,6 @@ resource "google_compute_instance" "webserver" {
     #checkov:skip=CKV_GCP_32: We will use ssh keys down the line
     block-project-ssh-keys = false
   }
+
+  tags = ["http-server"]
 }
