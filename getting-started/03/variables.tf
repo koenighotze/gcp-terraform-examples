@@ -12,3 +12,7 @@ variable "zone" {
   description = "The zone to deploy resources into"
   type        = string
 }
+
+variable "sa_email" {
+  type = string
+}

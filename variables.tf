@@ -14,3 +14,7 @@ variable "zone" {
   type        = string
   default     = "europe-west3-a"
 }
+
+variable "sa_email" {
+  type = string
+}
