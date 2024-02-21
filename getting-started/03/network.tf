@@ -25,10 +25,13 @@ resource "google_compute_firewall" "firewall" {
   name    = "allow-ssh-http"
   network = google_compute_network.vpc.name
 
+  #checkov:skip=CKV_GCP_2: we need ssh and http
   allow {
     protocol = "tcp"
     ports    = ["22", "80"]
   }
 
+  #checkov:skip=CKV_GCP_106: we need ssh and http
   source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["http-server"]
 }

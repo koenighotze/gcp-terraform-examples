@@ -6,12 +6,18 @@ resource "google_compute_instance" "webserver" {
   allow_stopping_for_update = true
   enable_display            = false
 
+  #checkov:skip=CKV_GCP_38: Use google keys
   boot_disk {
     auto_delete = true
 
     initialize_params {
       image = "debian-cloud/debian-12"
     }
+  }
+
+  shielded_instance_config {
+    enable_integrity_monitoring = true
+    enable_vtpm                 = true
   }
 
   network_interface {
@@ -27,5 +33,10 @@ resource "google_compute_instance" "webserver" {
     email = google_service_account.instance_service_account.email
     # https://cloud.google.com/sdk/gcloud/reference/alpha/compute/instances/set-scopes#--scopes
     scopes = ["cloud-platform"]
+  }
+
+  metadata = {
+    #checkov:skip=CKV_GCP_32: We will use ssh keys down the line
+    block-project-ssh-keys = false
   }
 }
