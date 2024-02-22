@@ -27,6 +27,7 @@ resource "google_compute_instance" "webserver" {
     stack_type = "IPV4_ONLY"
 
     # needed for external IP
+    #checkov:skip=CKV_GCP_40: We will use external IP
     access_config {
     }
   }
