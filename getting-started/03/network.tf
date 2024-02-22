@@ -33,5 +33,5 @@ resource "google_compute_firewall" "firewall" {
 
   #checkov:skip=CKV_GCP_106: we need ssh and http
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["http-server"]
+  target_tags   = ["webserver"]
 }

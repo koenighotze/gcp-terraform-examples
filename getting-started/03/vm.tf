@@ -45,5 +45,5 @@ resource "google_compute_instance" "webserver" {
     block-project-ssh-keys = false
   }
 
-  tags = ["http-server"]
+  tags = ["webserver"]
 }
