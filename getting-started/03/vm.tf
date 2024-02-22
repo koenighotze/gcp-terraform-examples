@@ -25,6 +25,10 @@ resource "google_compute_instance" "webserver" {
     subnetwork = google_compute_subnetwork.subnetwork.id
 
     stack_type = "IPV4_ONLY"
+
+    # needed for external IP
+    access_config {
+    }
   }
 
   metadata_startup_script = "echo hi > /test.txt"
