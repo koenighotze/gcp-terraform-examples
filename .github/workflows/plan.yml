@@ -33,7 +33,7 @@ jobs:
           echo "project_directories=${PROJECT_DIRECTORIES}" > "${GITHUB_OUTPUT}"
           echo "${PROJECT_DIRECTORIES}" | jq > "${GITHUB_STEP_SUMMARY}"
     outputs:
-      tf-project: ${{ steps.build-matrix.outputs.tf-project }}
+      project_directories: ${{ steps.build-matrix.outputs.project_directories }}
 
   # compliance-scan:
   #   runs-on: ubuntu-22.04
