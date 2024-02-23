@@ -148,4 +148,4 @@ jobs:
       - name: Plan
         run: terraform plan -no-color -out=tfplan
       - run: |
-          terraform show -json -no-color tfplan | jq > "${GITHUB_STEP_SUMMARY}" 2>&1
+          terraform show -no-color tfplan > "${GITHUB_STEP_SUMMARY}" 2>&1
