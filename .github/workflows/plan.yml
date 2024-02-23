@@ -147,3 +147,4 @@ jobs:
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Plan
         run: terraform plan -no-color -out=tfplan
+      - run: GITHUB_STEP_SUMMARY=$(cat tfplan)
