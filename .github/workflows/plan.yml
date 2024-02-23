@@ -114,27 +114,36 @@ jobs:
       - name: Terraform Validate
         run: terraform validate -no-color
 
-  # plan:
-  #   runs-on: ubuntu-22.04
+  plan:
+    runs-on: ubuntu-22.04
 
-  #   needs:
-  #     - qa
-  #     - lint
-  #     - compliance-scan
+    needs:
+      - build-matrix
+      - qa
+      - lint
+      - compliance-scan
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Authenticating
-  #       uses: google-github-actions/auth@v2.1.1
-  #       with:
-  #         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-  #         service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
-  #     - name: Setting up GCP environment
-  #       uses: google-github-actions/setup-gcloud@v2.1.0
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v3
-  #     - name: Init
-  #       run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
-  #     - name: Plan
-  #       run: terraform plan -no-color -out=tfplan
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.build-matrix.outputs.project_directories ) }}
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Authenticating
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+      - name: Setting up GCP environment
+        uses: google-github-actions/setup-gcloud@v2.1.0
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Init
+        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+      - name: Plan
+        run: terraform plan -no-color -out=tfplan
