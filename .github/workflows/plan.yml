@@ -42,6 +42,10 @@ jobs:
       matrix:
         project: ${{ fromJson(needs.build-matrix.outputs.project_directories ) }}
 
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +53,7 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@v12.2674.0
         with:
-          directory: ${{ matrix.project }}
+          # directory: ${{ matrix.project }}
           framework: terraform
           # we are fine with Google's Keys
           # we are fine with basic roles (no org), we are fine with our own module
@@ -63,6 +67,10 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.build-matrix.outputs.project_directories ) }}
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
 
     steps:
       - uses: actions/checkout@v4
@@ -81,6 +89,10 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.build-matrix.outputs.project_directories ) }}
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
 
     steps:
       - name: Checkout
