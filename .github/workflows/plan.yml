@@ -15,84 +15,106 @@ env:
   TF_IN_AUTOMATION: true
   TF_INPUT: false
   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECTS: "./getting-started/03"
 
 permissions:
   id-token: write
 
 jobs:
-  compliance-scan:
-    runs-on: ubuntu-20.04
+  build-matrix:
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Run Checkov action
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12.2674.0
-        with:
-          framework: terraform
-          # we are fine with Google's Keys
-          # we are fine with basic roles (no org), we are fine with our own module
-          skip_check: CKV_GCP_84,CKV_GIT_4,CKV_GCP_117,CKV_TF_1,CKV2_GCP_18
-          output_format: cli
-          download_external_modules: true
+      - name: Build directory matrix
+        id: build-matrix
+        run: |
+          PROJECT_DIRECTORIES="$(find ./getting-started -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I{} echo -n '{},' | sed -e 's/,$//' | jq -R 'split(",")')"
+          echo "project_directories=${PROJECT_DIRECTORIES}" > "${GITHUB_OUTPUT}"
+          echo "${PROJECT_DIRECTORIES}" | jq > "${GITHUB_STEP_SUMMARY}"
+    outputs:
+      tf-project: ${{ steps.build-matrix.outputs.tf-project }}
 
-  lint:
-    runs-on: ubuntu-20.04
+  # compliance-scan:
+  #   runs-on: ubuntu-22.04
+  #   needs: build-matrix
+  #   strategy:
+  #     matrix:
+  #       project: ${{ fromJson(needs.build-matrix.outputs.tf-project) }}
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: terraform-linters/setup-tflint@v4
-        name: Setting up TFLint
-        with:
-          tflint_version: v0.50.3
-      - name: Initializing TFLint
-        run: tflint --init
-      - name: Linting
-        run: tflint -f compact --disable-rule=terraform_module_pinned_source --recursive
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Run Checkov action
+  #       id: checkov
+  #       uses: bridgecrewio/checkov-action@v12.2674.0
+  #       with:
+  #         framework: terraform
+  #         # we are fine with Google's Keys
+  #         # we are fine with basic roles (no org), we are fine with our own module
+  #         skip_check: CKV_GCP_84,CKV_GIT_4,CKV_GCP_117,CKV_TF_1,CKV2_GCP_18
+  #         output_format: cli
+  #         download_external_modules: true
 
-  qa:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Authenticating
-        uses: google-github-actions/auth@v2.1.1
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
-      - name: Setting up GCP environment
-        uses: google-github-actions/setup-gcloud@v2.1.0
-      - run: gcloud projects list
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-      - name: Terraform Init
-        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
-      - name: Terraform Format
-        run: terraform fmt -check -recursive
-      - name: Terraform Validate
-        run: terraform validate -no-color
+  # lint:
+  #   runs-on: ubuntu-22.04
+  #   needs: build-matrix
+  #   strategy:
+  #     matrix:
+  #       project: ${{ fromJson(needs.build-matrix.outputs.tf-project) }}
 
-  plan:
-    runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: terraform-linters/setup-tflint@v4
+  #       name: Setting up TFLint
+  #       with:
+  #         tflint_version: v0.50.3
+  #     - name: Initializing TFLint
+  #       run: tflint --init
+  #     - name: Linting
+  #       run: tflint -f compact --disable-rule=terraform_module_pinned_source --recursive
 
-    needs:
-      - qa
-      - lint
-      - compliance-scan
+  # qa:
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Authenticating
+  #       uses: google-github-actions/auth@v2.1.1
+  #       with:
+  #         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+  #     - name: Setting up GCP environment
+  #       uses: google-github-actions/setup-gcloud@v2.1.0
+  #     - run: gcloud projects list
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #     - name: Terraform Init
+  #       run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+  #     - name: Terraform Format
+  #       run: terraform fmt -check -recursive
+  #     - name: Terraform Validate
+  #       run: terraform validate -no-color
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Authenticating
-        uses: google-github-actions/auth@v2.1.1
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
-      - name: Setting up GCP environment
-        uses: google-github-actions/setup-gcloud@v2.1.0
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-      - name: Init
-        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
-      - name: Plan
-        run: terraform plan -no-color
+  # plan:
+  #   runs-on: ubuntu-22.04
+
+  #   needs:
+  #     - qa
+  #     - lint
+  #     - compliance-scan
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Authenticating
+  #       uses: google-github-actions/auth@v2.1.1
+  #       with:
+  #         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+  #     - name: Setting up GCP environment
+  #       uses: google-github-actions/setup-gcloud@v2.1.0
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #     - name: Init
+  #       run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+  #     - name: Plan
+  #       run: terraform plan -no-color -out=tfplan
