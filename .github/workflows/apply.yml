@@ -2,6 +2,10 @@ name: Apply
 
 on:
   workflow_dispatch:
+    inputs:
+      project:
+        description: "project to apply"
+        required: true
 
 env:
   TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
@@ -17,7 +21,11 @@ permissions:
 
 jobs:
   compliance-scan:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.project }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +41,10 @@ jobs:
           download_external_modules: true
 
   apply:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.project }}
 
     needs:
       - compliance-scan
