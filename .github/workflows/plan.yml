@@ -151,7 +151,7 @@ jobs:
         run: |
           {
             echo "### Terraform Plan Output";
-            echo "```";
+            echo "\`\`\`";
             terraform show -no-color tfplan;
-            echo "```";
+            echo "\`\`\`";
           }  > "${GITHUB_STEP_SUMMARY}"
