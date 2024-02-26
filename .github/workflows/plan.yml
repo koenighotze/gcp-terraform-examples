@@ -150,8 +150,8 @@ jobs:
       - name: Show Terraform Plan as Summary
         run: |
           {
-            echo "### Terraform Plan Output" 
-            echo "```"
-            terraform show -no-color tfplan 2>&1
-            echo "```"
+            echo "### Terraform Plan Output";
+            echo "```";
+            terraform show -no-color tfplan;
+            echo "```";
           }  > "${GITHUB_STEP_SUMMARY}"
