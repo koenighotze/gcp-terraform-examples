@@ -9,22 +9,5 @@ set -o pipefail
 # enable debug mode, by running your script as TRACE=1
 if [[ "${TRACE-0}" == "1" ]]; then set -o xtrace; fi
 
-source "$(dirname "$0")/common.sh"
-
-PROJECT_ROOTS=(
-    getting-started/03
-)
-
-checkov --quiet -d .
-terraform fmt -check -recursive
-
-CURRENT=$PWD
-for i in "${PROJECT_ROOTS[@]}"
-do
-    cd $CURRENT
-    cd $i
-    tflint --init 
-    tflint -f compact --disable-rule=terraform_module_pinned_source --disable-rule=terraform_required_providers --recursive
-    terraform validate -no-color 
-done
-
+PROJECT_DIRECTORIES="$(find ./getting-started -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I{} echo -n '{},' | sed -e 's/,$//' | jq -R -c 'split(",")')"
+echo "project_directories=${PROJECT_DIRECTORIES}"

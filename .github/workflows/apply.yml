@@ -1,10 +1,10 @@
-name: Apply
+name: Apply project directory
 
 on:
   workflow_dispatch:
     inputs:
       project:
-        description: "project to apply"
+        description: "Project directory to apply"
         required: true
 
 env:

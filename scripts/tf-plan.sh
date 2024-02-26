@@ -13,4 +13,5 @@ source "$(dirname "$0")/common.sh"
 
 terraform plan \
     -var "project_id=$PROJECT" \
-    -var "sa_email=$SA_EMAIL" 
+    -var "sa_email=$SA_EMAIL" \
+    $*

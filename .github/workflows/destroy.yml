@@ -1,10 +1,10 @@
-name: Destroy
+name: Destroy project directory
 
 on:
   workflow_dispatch:
     inputs:
       project:
-        description: "project to destroy"
+        description: "Project directory to destory"
         required: true
 
 env:
