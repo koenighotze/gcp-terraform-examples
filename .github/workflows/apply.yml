@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       project:
+        type: string
         description: "Project directory to apply"
         required: true
 

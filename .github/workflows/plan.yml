@@ -16,6 +16,7 @@ env:
   TF_INPUT: false
   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
   PROJECTS: "./getting-started/03"
+  TF_STATE_BUCKET: ${{ secrets.TERRAFORM_STATE_BUCKET }}
 
 permissions:
   id-token: write
@@ -104,7 +105,6 @@ jobs:
           service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
       - name: Setting up GCP environment
         uses: google-github-actions/setup-gcloud@v2.1.0
-      - run: gcloud projects list
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
@@ -143,9 +143,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2.1.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-      - name: Init
+      - name: Terraform Init
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
-      - name: Plan
+      - name: Terraform Plan
         run: terraform plan -no-color -out=tfplan
-      - run: |
-          terraform show -no-color tfplan > "${GITHUB_STEP_SUMMARY}" 2>&1
+      - name: Show Terraform Plan as Summary
+        run: |
+          echo "### Terraform Plan Output" > "${GITHUB_STEP_SUMMARY}"
+          echo "```" >> "${GITHUB_STEP_SUMMARY}"
+          terraform show -no-color tfplan >> "${GITHUB_STEP_SUMMARY}" 2>&1
+          echo "```" >> "${GITHUB_STEP_SUMMARY}"

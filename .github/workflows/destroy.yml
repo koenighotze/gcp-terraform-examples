@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       project:
+        type: string
         description: "Project directory to destory"
         required: true
 
