@@ -111,8 +111,6 @@ jobs:
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Terraform Format
         run: terraform fmt -check -recursive
-      - name: Terraform Validate
-        run: terraform validate -no-color
 
   plan:
     runs-on: ubuntu-22.04

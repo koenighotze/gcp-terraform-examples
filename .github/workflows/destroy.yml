@@ -7,6 +7,10 @@ on:
         type: string
         description: "Project directory to destory"
         required: true
+      i-am-sure:
+        type: string
+        description: "Type yes if you want to really destory the project"
+        required: true
 
 env:
   TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
@@ -26,6 +30,8 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.event.inputs.project }}
+
+    if: ${{ github.event.inputs.i-am-sure == 'yes' }}
 
     steps:
       - name: Checkout
