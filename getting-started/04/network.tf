@@ -35,3 +35,20 @@ resource "google_compute_firewall" "firewall" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["webserver"]
 }
+
+# resource "google_compute_router" "router" {
+#   project = var.project_id
+#   name    = "router-${local.name_postfix}"
+#   network = google_compute_network.vpc.self_link
+#   region  = var.region
+# }
+
+# resource "google_compute_router_nat" "router_nat" {
+#   project                = var.project_id
+#   name                   = "router-nat-${local.name_postfix}"
+#   router                 = google_compute_router.router.name
+#   region                 = var.region
+#   nat_ip_allocate_option = "AUTO_ONLY"
+
+#   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+# }

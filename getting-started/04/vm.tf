@@ -2,7 +2,7 @@ resource "google_compute_instance" "webserver" {
   project                   = var.project_id
   name                      = "webserver-${local.name_postfix}"
   zone                      = var.zone
-  machine_type              = "e2-micro"
+  machine_type              = data.google_compute_machine_types.machine_types.machine_types[0].name
   allow_stopping_for_update = true
   enable_display            = false
 
@@ -11,7 +11,7 @@ resource "google_compute_instance" "webserver" {
     auto_delete = true
 
     initialize_params {
-      image = "debian-cloud/debian-12"
+      image = data.google_compute_image.image.self_link
     }
   }
 
@@ -21,13 +21,15 @@ resource "google_compute_instance" "webserver" {
   }
 
   network_interface {
-    network    = google_compute_network.vpc.id
-    subnetwork = google_compute_subnetwork.subnetwork.id
+    network    = google_compute_network.vpc.self_link
+    subnetwork = google_compute_subnetwork.subnetwork.self_link
 
     stack_type = "IPV4_ONLY"
 
-    # this VM does not have a public IP and should be accessed via 
-    # the routing rules
+    # needed for external IP
+    #checkov:skip=CKV_GCP_40: We will use external IP
+    access_config {
+    }
   }
 
   service_account {
