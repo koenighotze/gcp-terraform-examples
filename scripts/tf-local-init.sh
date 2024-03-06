@@ -18,7 +18,7 @@ source "$(dirname "$0")/common.sh"
 gcloud auth application-default set-quota-project "$QUOTA_PROJECT"
 gcloud config set project "$PROJECT"
 if bucket_exists "$STATE_BUCKET"; then
-    terraform init -backend-config="bucket=$STATE_BUCKET"
+    terraform init -backend-config="bucket=$STATE_BUCKET" $* 
 else
     echo "Missing bucket '$STATE_BUCKET'; cannot initialize backend"
     exit 1 
