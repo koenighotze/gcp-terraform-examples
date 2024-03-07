@@ -11,20 +11,18 @@ if [[ "${TRACE-0}" == "1" ]]; then set -o xtrace; fi
 
 source "$(dirname "$0")/common.sh"
 
-PROJECT_ROOTS=(
-    getting-started/03
-)
-
-checkov --quiet -d .
+PROJECT_ROOTS=($(find ./getting-started -maxdepth 1 -mindepth 1 -type d))
 terraform fmt -check -recursive
 
 CURRENT=$PWD
 for i in "${PROJECT_ROOTS[@]}"
 do
-    cd $CURRENT
+    echo Checking $i
     cd $i
     tflint --init 
     tflint -f compact --disable-rule=terraform_module_pinned_source --disable-rule=terraform_required_providers --recursive
     terraform validate -no-color 
+    cd $CURRENT
 done
 
+checkov -d .

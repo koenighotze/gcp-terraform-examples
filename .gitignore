@@ -35,3 +35,4 @@ pkg/
 local.sh
 .vscode
 TODO.txt
+*.swp
