@@ -8,4 +8,5 @@ data "google_compute_machine_types" "machine_types" {
   zone   = var.zone
 }
 
-# zones in region
+data "google_compute_zones" "available" {
+}
