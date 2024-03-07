@@ -7,6 +7,7 @@ on:
       project:
         type: string
         description: "Project directory to destory"
+        default: "getting-started/"
         required: true
       i-am-sure:
         type: string
