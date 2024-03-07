@@ -1,0 +1,66 @@
+name: Destroy all project directories no questions asked
+
+on:
+  #checkov:skip=CKV_GHA_7
+  workflow_dispatch:
+    inputs:
+      i-am-sure:
+        type: string
+        description: "Type yes if you want to really destory everything. This is not a drill!"
+        required: true
+
+env:
+  TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+  TF_VAR_sa_email: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+permissions:
+  id-token: write
+
+jobs:
+  build-matrix:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build directory matrix
+        id: build-matrix
+        run: |
+          ./scripts/build-project-matrix.sh > "${GITHUB_OUTPUT}"
+    outputs:
+      project_directories: ${{ steps.build-matrix.outputs.project_directories }}
+
+  destroy:
+    runs-on: ubuntu-22.04
+
+    needs: build-matrix
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.build-matrix.outputs.project_directories ) }}
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+
+    if: ${{ github.event.inputs.i-am-sure == 'yes' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Authenticating
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+      - name: Setting up GCP environment
+        uses: google-github-actions/setup-gcloud@v2.0.1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Init
+        run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
+      - name: Destroy
+        run: terraform destroy -auto-approve

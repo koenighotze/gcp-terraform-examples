@@ -31,9 +31,6 @@ jobs:
         id: build-matrix
         run: |
           ./scripts/build-project-matrix.sh > "${GITHUB_OUTPUT}"
-          # PROJECT_DIRECTORIES="$(find ./getting-started -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I{} echo -n '{},' | sed -e 's/,$//' | jq -R -c 'split(",")')"
-          # echo "project_directories=${PROJECT_DIRECTORIES}" > "${GITHUB_OUTPUT}"
-          # echo "${PROJECT_DIRECTORIES}" | jq > "${GITHUB_STEP_SUMMARY}"
     outputs:
       project_directories: ${{ steps.build-matrix.outputs.project_directories }}
 
