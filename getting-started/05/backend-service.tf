@@ -7,7 +7,7 @@ resource "google_compute_backend_service" "backend_service" {
   session_affinity = "NONE"
 
   backend {
-    group = google_compute_region_instance_group_manager.manager.self_link
+    group = google_compute_region_instance_group_manager.manager.instance_group
   }
 }
 
