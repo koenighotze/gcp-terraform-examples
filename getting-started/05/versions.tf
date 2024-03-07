@@ -3,7 +3,7 @@ terraform {
 
   backend "gcs" {
     # bucket = pass on cli
-    prefix = "terraform/gcp-training/getting-started/05/state"
+    prefix = "terraform/gcp-training/getting-started/04/state"
   }
 
   required_providers {
