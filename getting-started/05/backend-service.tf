@@ -9,7 +9,8 @@ resource "google_compute_region_backend_service" "backend_service" {
   load_balancing_scheme = "EXTERNAL"
 
   backend {
-    group = google_compute_region_instance_group_manager.manager.instance_group
+    group          = google_compute_region_instance_group_manager.manager.instance_group
+    balancing_mode = "RATE"
   }
 }
 
