@@ -2,6 +2,8 @@ name: Plan all projects
 
 on:
   push:
+    paths:
+      - "getting-started/05/**" # tmp to speed up things
     paths-ignore:
       - "scripts/**"
     branches: ["main"]

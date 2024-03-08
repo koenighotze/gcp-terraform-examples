@@ -2,7 +2,6 @@
 resource "google_compute_region_instance_group_manager" "manager" {
   name               = "mig-${local.name_postfix}"
   base_instance_name = local.name_postfix
-  region             = var.region
 
   distribution_policy_zones = ["europe-west3-a", "europe-west3-b"] # TODO Dynamic
 
@@ -52,9 +51,9 @@ resource "google_compute_region_instance_template" "template" {
 
     stack_type = "IPV4_ONLY"
 
-    # no external IP, we will use a load balancer
-    # access_config {
-    # }
+    # tmp for debugging no external IP, we will use a load balancer
+    access_config {
+    }
   }
 
   service_account {

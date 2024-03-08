@@ -6,7 +6,6 @@ resource "google_compute_network" "vpc" {
 
 resource "google_compute_subnetwork" "subnetwork" {
   project                  = var.project_id
-  region                   = var.region
   name                     = "subnetwork-${local.name_postfix}"
   ip_cidr_range            = "10.0.0.0/16" # todo actually too large
   network                  = google_compute_network.vpc.id
@@ -22,7 +21,6 @@ resource "google_compute_subnetwork" "subnetwork" {
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
   project                  = var.project_id
-  region                   = var.region
   name                     = "proxtsubnetwork-${local.name_postfix}"
   ip_cidr_range            = "10.1.0.0/23"
   network                  = google_compute_network.vpc.id

@@ -1,6 +1,5 @@
 resource "google_compute_region_backend_service" "backend_service" {
   name                  = "backend-service-${local.name_postfix}"
-  region                = var.region
   protocol              = "TCP"
   port_name             = "http"
   timeout_sec           = 10
