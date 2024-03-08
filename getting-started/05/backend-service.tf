@@ -8,8 +8,10 @@ resource "google_compute_region_backend_service" "backend_service" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backend {
-    group          = google_compute_region_instance_group_manager.manager.instance_group
-    balancing_mode = "CONNECTION"
+    group           = google_compute_region_instance_group_manager.manager.instance_group
+    balancing_mode  = "UTILIZATION"
+    capacity_scaler = 1
+    max_utilization = 0.9
   }
 }
 
