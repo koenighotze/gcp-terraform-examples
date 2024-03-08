@@ -70,6 +70,7 @@ resource "google_compute_region_instance_template" "template" {
 
   metadata_startup_script = <<SCRIPT
 #!/bin/bash
+sudo echo "FOO" > /foo.txt
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo systemctl start nginx
