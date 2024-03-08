@@ -9,5 +9,11 @@ set -o pipefail
 # enable debug mode, by running your script as TRACE=1
 if [[ "${TRACE-0}" == "1" ]]; then set -o xtrace; fi
 
+#CHANGE_SET=$(git diff --name-only "$GITHUB_SHA" | grep getting | cut -d/ -f1-2 |uniq)
+
+CHANGES_SINCE_LAST_COMMIT=$(git diff --name-only HEAD HEAD~1)
+echo "Files changed $CHANGES_SINCE_LAST_COMMIT"
+
 PROJECT_DIRECTORIES="$(find ./getting-started -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I{} echo -n '{},' | sed -e 's/,$//' | jq -R -c 'split(",")')"
+
 echo "project_directories=${PROJECT_DIRECTORIES}"
