@@ -5,6 +5,8 @@ resource "google_compute_forwarding_rule" "forwarding_rule" {
   port_range            = 80
   network               = google_compute_network.vpc.id
   target                = google_compute_region_target_http_proxy.http_proxy.self_link
+
+  depends_on = [google_compute_subnetwork.proxy_subnetwork]
 }
 
 resource "google_compute_region_target_http_proxy" "http_proxy" {
