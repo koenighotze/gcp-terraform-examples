@@ -15,6 +15,11 @@ resource "google_compute_region_instance_group_manager" "manager" {
     name              = "instance"
     instance_template = google_compute_region_instance_template.template.self_link
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
 }
 
 resource "google_compute_region_instance_template" "template" {
@@ -51,8 +56,8 @@ resource "google_compute_region_instance_template" "template" {
     stack_type = "IPV4_ONLY"
 
     # for debugging no external IP, we will use a load balancer
-    # access_config {
-    # }
+    access_config {
+    }
   }
 
   service_account {
@@ -70,8 +75,11 @@ resource "google_compute_region_instance_template" "template" {
 #!/bin/bash
 sudo apt-get update
 sudo apt-get install -y nginx
-sudo sed -i -e "s,nginx,$HOSTNAME," /usr/share/nginx/html/index.html
+sudo sed -e "s,nginx,$HOSTNAME," < /usr/share/nginx/html/index.html > /tmp/index.html
+sudo mv /tmp/index.html /var/www/html/index.html
 sudo systemctl start nginx
 sudo systemctl enable nginx
 SCRIPT
 }
+
+# TODO require NAT for updates

@@ -29,8 +29,8 @@ resource "google_compute_subnetwork" "proxy_subnetwork" {
   #checkov:skip=CKV_GCP_74: proxy network does not require this
   private_ip_google_access = false
   #checkov:skip=CKV_GCP_76: proxy network does not require this
-  private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
-  role                       = "ACTIVE"
+  # private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+  role = "ACTIVE"
 }
 
 resource "google_compute_firewall" "firewall" {
