@@ -26,7 +26,7 @@ resource "google_compute_subnetwork" "proxy_subnetwork" {
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
 
-  #checkov:skip=CKV_GCP_76: proxy network does not require this
+  #checkov:skip=CKV_GCP_74: proxy network does not require this
   private_ip_google_access = false
   stack_type               = "IPV4_ONLY"
   role                     = "ACTIVE"
