@@ -18,3 +18,8 @@ variable "zone" {
 variable "sa_email" {
   type = string
 }
+
+variable "target_size" {
+  type    = number
+  default = 2
+}

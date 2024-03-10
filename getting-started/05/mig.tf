@@ -1,11 +1,10 @@
-
 resource "google_compute_region_instance_group_manager" "manager" {
   name               = "mig-${local.name_postfix}"
   base_instance_name = local.name_postfix
 
-  distribution_policy_zones = ["europe-west3-a", "europe-west3-b"] # TODO Dynamic
+  distribution_policy_zones = slice(data.google_compute_zones.available.names, 0, 2)
 
-  target_size = 2 # variable
+  target_size = var.target_size
 
   named_port {
     name = "http"
