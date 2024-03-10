@@ -20,12 +20,14 @@ resource "google_compute_subnetwork" "subnetwork" {
 }
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
-  project                  = var.project_id
-  name                     = "proxysubnetwork-${local.name_postfix}"
-  ip_cidr_range            = "10.1.0.0/23"
-  network                  = google_compute_network.vpc.id
-  purpose                  = "REGIONAL_MANAGED_PROXY"
-  private_ip_google_access = true
+  project       = var.project_id
+  name          = "proxysubnetwork-${local.name_postfix}"
+  ip_cidr_range = "10.1.0.0/23"
+  network       = google_compute_network.vpc.id
+  purpose       = "REGIONAL_MANAGED_PROXY"
+
+  #checkov:skip=CKV_GCP_76: proxy network does not require this
+  private_ip_google_access = false
   stack_type               = "IPV4_ONLY"
   role                     = "ACTIVE"
 
