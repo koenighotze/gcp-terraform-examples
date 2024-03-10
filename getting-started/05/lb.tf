@@ -14,8 +14,8 @@
 #   url_map = google_compute_region_url_map.default.id
 # }
 
-# resource "google_compute_region_url_map" "default" {
-#   name = "url-map"
+resource "google_compute_region_url_map" "default" {
+  name = "url-map-${local.name_postfix}"
 
-#   default_service = google_compute_region_backend_service.backend_service.self_link
-# }
+  default_service = google_compute_region_backend_service.backend_service.self_link
+}
