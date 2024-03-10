@@ -25,7 +25,7 @@ resource "google_compute_subnetwork" "proxy_subnetwork" {
   ip_cidr_range            = "10.1.0.0/23"
   network                  = google_compute_network.vpc.id
   purpose                  = "REGIONAL_MANAGED_PROXY"
-  private_ip_google_access = false
+  private_ip_google_access = true
   role                     = "ACTIVE"
 
   log_config {
