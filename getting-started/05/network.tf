@@ -26,6 +26,7 @@ resource "google_compute_subnetwork" "proxy_subnetwork" {
   network                  = google_compute_network.vpc.id
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true
+  purpose                  = "REGIONAL_MANAGED_PROXY"
 
   log_config {
     aggregation_interval = "INTERVAL_10_MIN"
