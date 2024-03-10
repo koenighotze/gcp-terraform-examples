@@ -8,3 +8,6 @@ provider "google" {
     gettingstarted = "05"
   }
 }
+
+provider "random" {
+}

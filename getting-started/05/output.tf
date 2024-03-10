@@ -1,4 +1,4 @@
-output "lb_ip" {
-  value       = google_compute_forwarding_rule.forwarding_rule.IP_address
-  description = "The IP address of the load balancer"
+output "lb_url" {
+  value       = "http://${google_compute_forwarding_rule.forwarding_rule.ip_address}"
+  description = "The URL of the load balancer"
 }
