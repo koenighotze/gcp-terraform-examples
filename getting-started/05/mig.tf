@@ -50,9 +50,9 @@ resource "google_compute_region_instance_template" "template" {
 
     stack_type = "IPV4_ONLY"
 
-    # tmp for debugging no external IP, we will use a load balancer
-    access_config {
-    }
+    # for debugging no external IP, we will use a load balancer
+    # access_config {
+    # }
   }
 
   service_account {
@@ -68,9 +68,9 @@ resource "google_compute_region_instance_template" "template" {
 
   metadata_startup_script = <<SCRIPT
 #!/bin/bash
-sudo echo "FOO" > /foo.txt
 sudo apt-get update
 sudo apt-get install -y nginx
+sudo sed -i -e "s,nginx,$HOSTNAME," /usr/share/nginx/html/index.html
 sudo systemctl start nginx
 sudo systemctl enable nginx
 SCRIPT
