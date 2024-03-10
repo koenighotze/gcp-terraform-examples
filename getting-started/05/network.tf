@@ -21,12 +21,12 @@ resource "google_compute_subnetwork" "subnetwork" {
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
   project                  = var.project_id
-  name                     = "proxtsubnetwork-${local.name_postfix}"
+  name                     = "proxysubnetwork-${local.name_postfix}"
   ip_cidr_range            = "10.1.0.0/23"
   network                  = google_compute_network.vpc.id
-  stack_type               = "IPV4_ONLY"
-  private_ip_google_access = true
   purpose                  = "REGIONAL_MANAGED_PROXY"
+  private_ip_google_access = false
+  role                     = "ACTIVE"
 
   log_config {
     aggregation_interval = "INTERVAL_10_MIN"
