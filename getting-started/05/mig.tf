@@ -19,7 +19,7 @@ resource "google_compute_region_instance_group_manager" "manager" {
 
 resource "google_compute_region_instance_template" "template" {
   project = var.project_id
-  name    = "webserver-template-${local.name_postfix}"
+  name    = "webserver-template-${random_uuid.uuid.result}-${local.name_postfix}"
 
   tags = ["webserver"]
 
