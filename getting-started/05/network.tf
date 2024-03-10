@@ -26,16 +26,10 @@ resource "google_compute_subnetwork" "proxy_subnetwork" {
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
 
-  #checkov:skip=CKV_GCP_74: proxy network does not require this
-  private_ip_google_access = false
-  stack_type               = "IPV4_ONLY"
-  role                     = "ACTIVE"
-
-  log_config {
-    aggregation_interval = "INTERVAL_10_MIN"
-    flow_sampling        = 0.5
-    metadata             = "INCLUDE_ALL_METADATA"
-  }
+  #checkov:skip=CKV_GCP_74,CKV_GCP_76: proxy network does not require this
+  private_ip_google_access   = false
+  private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+  role                       = "ACTIVE"
 }
 
 resource "google_compute_firewall" "firewall" {
