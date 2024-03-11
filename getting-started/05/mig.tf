@@ -56,8 +56,8 @@ resource "google_compute_region_instance_template" "template" {
     stack_type = "IPV4_ONLY"
 
     # for debugging no external IP, we will use a load balancer
-    access_config {
-    }
+    # access_config {
+    # }
   }
 
   service_account {
@@ -82,4 +82,4 @@ sudo systemctl enable nginx
 SCRIPT
 }
 
-# TODO require NAT for updates
+
