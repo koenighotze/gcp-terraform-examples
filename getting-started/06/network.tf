@@ -9,7 +9,7 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "instance_subnetwork" {
-  name          = "instance_subnetwork-${local.name_postfix}"
+  name          = "instance-subnetwork-${local.name_postfix}"
   network       = google_compute_network.vpc.id
   ip_cidr_range = "10.1.0.0/23"
 }
