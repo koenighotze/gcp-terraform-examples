@@ -1,6 +1,6 @@
 resource "google_service_account" "instance_service_account" {
   project      = var.project_id
-  account_id   = "instance-service-account-${local.name_postfix}"
+  account_id   = "sa-${local.name_postfix}"
   display_name = "Instance Service Account for ${local.name_postfix}"
 }
 
