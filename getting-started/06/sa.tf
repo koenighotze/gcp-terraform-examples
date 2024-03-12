@@ -3,11 +3,9 @@ resource "google_service_account" "sa" {
   display_name = "SA for webservice instances"
 }
 
-resource "google_service_account_iam_member" "iam_member" {
-  for_each           = toset(["roles/logging.logWriter"])
-  service_account_id = google_service_account.sa.id
-  role               = each.value
-  member             = "serviceAccount:${google_service_account.sa.email}"
+resource "google_project_iam_member" "iam_member" {
+  project  = var.project_id
+  for_each = toset(["roles/logging.logWriter"])
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.sa.email}"
 }
-
-
