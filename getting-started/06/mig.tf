@@ -16,7 +16,7 @@ resource "google_compute_region_instance_group_manager" "mig" {
 }
 
 resource "google_compute_region_instance_template" "template" {
-  name         = "template-${local.name_postfix}"
+  name         = "template-${local.name_postfix}-${random_integer.integer.result}"
   description  = "Template for the webservers"
   machine_type = data.google_compute_machine_types.machine_types.machine_types[0].name
 
@@ -48,4 +48,8 @@ resource "google_compute_region_instance_template" "template" {
   metadata_startup_script = "echo hi > /test.txt"
 
   tags = ["webserver"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
