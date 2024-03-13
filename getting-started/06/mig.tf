@@ -22,7 +22,7 @@ resource "google_compute_region_instance_template" "template" {
 
   service_account {
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    email  = google_service_account.sa.email
+    email  = google_service_account.instance_service_account.email
     scopes = ["cloud-platform"]
   }
 

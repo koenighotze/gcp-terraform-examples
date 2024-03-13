@@ -8,5 +8,5 @@ output "bucket_name" {
 }
 
 output "instance_service_account_email" {
-  value = google_service_account.sa.email
+  value = google_service_account.instance_service_account.email
 }
