@@ -1,7 +1,5 @@
 
-# "google_compute_network"
-# google_compute_firewall
-# google_compute_subnetwork (fuer proxy und maschinen)
+# google_compute_subnetwork (fuer proxy)
 
 resource "google_compute_network" "vpc" {
   name                    = "vpc-${local.name_postfix}"
@@ -23,7 +21,6 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
   }
 }
 
-
 resource "google_compute_firewall" "firewall" {
   name      = "allow-ssh-http"
   network   = google_compute_network.vpc.id
@@ -38,6 +35,3 @@ resource "google_compute_firewall" "firewall" {
     ports    = ["80", "22"]
   }
 }
-
-
-

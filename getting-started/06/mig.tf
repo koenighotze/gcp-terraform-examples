@@ -1,6 +1,22 @@
-# google_compute_region_instance_group_manager
+resource "google_compute_region_instance_group_manager" "mig" {
+  name = "mig-${local.name_postfix}"
 
-# google_compute_region_instance_template
+  base_instance_name        = "webserver"
+  distribution_policy_zones = slice(data.google_compute_zones.available.names, 0, 2)
+  target_size               = 2
+
+  named_port {
+    name = "http"
+    port = 80
+  }
+
+  version {
+    instance_template = google_compute_region_instance_template.template.id
+    target_size {
+      fixed = 2
+    }
+  }
+}
 
 resource "google_compute_region_instance_template" "template" {
   name         = "template-${local.name_postfix}"
