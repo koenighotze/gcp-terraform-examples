@@ -12,9 +12,6 @@ resource "google_compute_region_instance_group_manager" "mig" {
 
   version {
     instance_template = google_compute_region_instance_template.template.id
-    target_size {
-      fixed = 2
-    }
   }
 }
 
