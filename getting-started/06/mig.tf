@@ -45,7 +45,7 @@ resource "google_compute_region_instance_template" "template" {
     preemptible        = true
     automatic_restart  = false
   }
-  
+
   metadata_startup_script = <<SCRIPT
 #!/bin/bash
 sudo apt-get update
