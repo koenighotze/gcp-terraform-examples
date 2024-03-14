@@ -18,6 +18,10 @@ variable "zone" {
 variable "sa_email" {
   type = string
 }
+variable "rebuild_mig" {
+  type    = bool
+  default = false
+}
 
 # variable "target_size" {
 #   type    = number

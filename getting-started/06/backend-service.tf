@@ -9,12 +9,11 @@ resource "google_compute_region_backend_service" "backend_service" {
   port_name             = "http"
   health_checks         = [google_compute_region_health_check.http_health_check.id]
   load_balancing_scheme = "EXTERNAL_MANAGED"
-  network               = google_compute_network.vpc.id
   backend {
-    group           = google_compute_region_instance_group_manager.mig.id
-    balancing_mode  = "RATE"
-    max_rate        = 100
-    capacity_scaler = 1.0
+    group           = google_compute_region_instance_group_manager.mig.instance_group
+    balancing_mode  = "UTILIZATION"
+    capacity_scaler = 1
+    max_utilization = 0.9
   }
 
   log_config {
