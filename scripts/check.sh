@@ -25,4 +25,4 @@ do
     cd "$CURRENT"
 done
 
-checkov -d .
+checkov --compact --quiet -d .

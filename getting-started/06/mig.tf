@@ -45,7 +45,16 @@ resource "google_compute_region_instance_template" "template" {
     preemptible        = true
     automatic_restart  = false
   }
-  metadata_startup_script = "echo hi > /test.txt"
+  
+  metadata_startup_script = <<SCRIPT
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo sed -e "s,nginx,$HOSTNAME," < /usr/share/nginx/html/index.html > /tmp/index.html
+sudo mv /tmp/index.html /var/www/html/index.html
+sudo systemctl start nginx
+sudo systemctl enable nginx
+SCRIPT
 
   tags = ["webserver"]
 
