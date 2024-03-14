@@ -1,7 +1,7 @@
 resource "google_compute_region_instance_group_manager" "mig" {
   name = "mig-${local.name_postfix}"
 
-  base_instance_name        = "webserver"
+  base_instance_name        = "webserver-${random_integer.integer.result}"
   distribution_policy_zones = slice(data.google_compute_zones.available.names, 0, 2)
   target_size               = 2
 
@@ -12,6 +12,10 @@ resource "google_compute_region_instance_group_manager" "mig" {
 
   version {
     instance_template = google_compute_region_instance_template.template.id
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
