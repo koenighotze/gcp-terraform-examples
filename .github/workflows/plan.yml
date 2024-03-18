@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@v12.2686.0
+        uses: bridgecrewio/checkov-action@v12.2691.0
         with:
           framework: terraform
           # we are fine with Google's Keys
