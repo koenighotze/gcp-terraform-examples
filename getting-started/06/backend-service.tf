@@ -1,8 +1,3 @@
-
-# google_compute_region_backend_service
-# google_compute_http_health_check
-
-
 resource "google_compute_region_backend_service" "backend_service" {
   name                  = "backend-service-${local.name_postfix}"
   protocol              = "HTTP"
