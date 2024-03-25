@@ -9,7 +9,7 @@ resource "google_compute_region_target_http_proxy" "http_proxy" {
 }
 
 resource "google_compute_forwarding_rule" "lb" {
-  depends_on = [ google_compute_subnetwork.proxy_subnetwork ]
+  depends_on            = [google_compute_subnetwork.proxy_subnetwork]
   name                  = "forwarding-rule-${local.name_postfix}"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   network               = google_compute_network.vpc.id
