@@ -8,18 +8,8 @@ resource "google_compute_region_target_http_proxy" "http_proxy" {
   url_map = google_compute_region_url_map.url_map.id
 }
 
-# resource "google_compute_region_health_check" "http_health_check" {
-#   name = "http-health-check-${local.name_postfix}"
-#   http_health_check {
-#     port_name          = "http"
-#     port_specification = "USE_NAMED_PORT"
-#   }
-#   log_config {
-#     enable = true
-#   }
-# }
-
 resource "google_compute_forwarding_rule" "lb" {
+  depends_on = [ google_compute_subnetwork.proxy_subnetwork ]
   name                  = "forwarding-rule-${local.name_postfix}"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   network               = google_compute_network.vpc.id

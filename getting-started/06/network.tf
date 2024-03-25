@@ -1,6 +1,4 @@
 
-# google_compute_subnetwork (fuer proxy)
-
 resource "google_compute_network" "vpc" {
   name                    = "vpc-${local.name_postfix}"
   auto_create_subnetworks = false
@@ -23,7 +21,7 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
   name          = "proxysubnetwork-${local.name_postfix}"
-  ip_cidr_range = "10.1.0.0/23"
+  ip_cidr_range = "10.2.0.0/23"
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
 
