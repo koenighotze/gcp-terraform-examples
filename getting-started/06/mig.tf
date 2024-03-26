@@ -41,46 +41,29 @@ resource "google_compute_region_instance_template" "template" {
 
     stack_type = "IPV4_ONLY"
 
-    #     access_config {
-    #       network_tier = "STANDARD"
-    #     }
+    # no public IP
+    # access_config {
+    #   network_tier = "STANDARD"
+    # }
   }
 
   scheduling {
-    # OK
-    # automatic_restart   = true
-    # on_host_maintenance = "MIGRATE"
-
-    # PENG
-    # provisioning_model = "SPOT"
-    # preemptible        = true
-    # automatic_restart  = false
-
     preemptible       = "true"
     automatic_restart = "false"
   }
 
   #checkov:skip=CKV_GCP_38: Use google keys
-
-  # shielded_instance_config {
-  #   enable_integrity_monitoring = true
-  #   enable_vtpm                 = true
-  # }
+  shielded_instance_config {
+    enable_integrity_monitoring = true
+    enable_vtpm                 = true
+  }
 
   metadata = {
     #checkov:skip=CKV_GCP_32: We will use ssh keys down the line
     block-project-ssh-keys = false
   }
 
-  metadata_startup_script = <<SCRIPT
-#!/bin/bash
-sudo apt-get update
-sudo apt-get install -y nginx
-sudo sed -e "s,nginx,$HOSTNAME," < /usr/share/nginx/html/index.html > /tmp/index.html
-sudo mv /tmp/index.html /var/www/html/index.html
-sudo systemctl start nginx
-sudo systemctl enable nginx
-SCRIPT
+  metadata_startup_script = templatefile("./scripts/setup-webserver.sh", { bucket_url = google_storage_bucket.websitecontent.url })
 
   tags           = ["webserver"]
   can_ip_forward = false

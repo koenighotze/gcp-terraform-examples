@@ -23,6 +23,10 @@ variable "rebuild_mig" {
   default = false
 }
 
+variable "local_user" {
+  type = string
+}
+
 # variable "target_size" {
 #   type    = number
 #   default = 2

@@ -1,10 +1,10 @@
 output "lb_url" {
-  value       = "http://TODO" #${google_compute_forwarding_rule.forwarding_rule.ip_address}"
+  value       = "http://${google_compute_forwarding_rule.lb.ip_address}"
   description = "The URL of the load balancer"
 }
 
 output "bucket_name" {
-  value = "gs://TODO"
+  value = google_storage_bucket.websitecontent.url
 }
 
 output "instance_service_account_email" {
