@@ -19,6 +19,7 @@ env:
   TF_VAR_workload_identity_pool_id: ${{ secrets.WORKLOAD_IDENTITY_POOL_ID }}
   TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
   TF_VAR_sa_email: ${{ secrets.CICD_SA_EMAIL_ADDRESS }}
+  TF_VAR_local_user: ${{ secrets.LOCAL_USER_EMAIL_ADDRESS }}
   TF_IN_AUTOMATION: true
   TF_INPUT: false
   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
