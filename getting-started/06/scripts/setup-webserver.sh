@@ -14,10 +14,12 @@ TMP_DIR=/tmp/website-content
 NGINX_DOC_DIR=/var/www/html
 
 mkdir -p "$TMP_DIR"/
+# shellcheck disable=SC2154
 gsutil cp "${bucket_url}"/* "$TMP_DIR"/
 sudo cp -rvf "$TMP_DIR"/* "$NGINX_DOC_DIR"/
-sudo sed -e "s,instance_name,$HOSTNAME," < "$TMP_DIR"/index.html > "$NGINX_DOC_DIR"/index.html
-sudo sed -e "s,instance_name,$HOSTNAME," < "$TMP_DIR"/404.html > "$NGINX_DOC_DIR"/404.html
+
+sudo sed -e "s,instance_name,$HOSTNAME," "$TMP_DIR"/index.html | sudo tee "$NGINX_DOC_DIR"/index.html > /dev/null
+sudo sed -e "s,instance_name,$HOSTNAME," "$TMP_DIR"/404.html | sudo tee "$NGINX_DOC_DIR"/404.html > /dev/null
 
 sudo systemctl start nginx
 sudo systemctl enable nginx
