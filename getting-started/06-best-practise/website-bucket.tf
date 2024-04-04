@@ -7,7 +7,7 @@ resource "google_storage_bucket" "websitecontent" {
   force_destroy               = true
   storage_class               = "REGIONAL"
   #checkov:skip=CKV_GCP_114: Website is public
-  public_access_prevention    = "inherited"
+  public_access_prevention = "inherited"
 
   versioning {
     enabled = true
