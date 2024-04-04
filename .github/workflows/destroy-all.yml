@@ -8,6 +8,8 @@ on:
         type: string
         description: "Type yes if you want to really destory everything. This is not a drill!"
         required: true
+  schedule:
+    - cron: "0 6 * * 1"
 
 env:
   TF_VAR_workload_identity_provider_name: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
@@ -47,7 +49,7 @@ jobs:
       run:
         working-directory: ${{ matrix.project }}
 
-    if: ${{ github.event.inputs.i-am-sure == 'yes' }}
+    if: github.event.inputs.i-am-sure == 'yes' || github.event.schedule != null
 
     steps:
       - name: Checkout
