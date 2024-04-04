@@ -14,8 +14,6 @@ variable "zone" {
   type        = string
   default     = "europe-west3-a"
 }
-
-# variable "target_size" {
-#   type    = number
-#   default = 2
-# }
+variable "sa_email" {
+  type = string
+}

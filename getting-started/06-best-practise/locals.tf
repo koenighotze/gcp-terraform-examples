@@ -1,3 +1,3 @@
 locals {
-  name_postfix = "ex-06-${random_integer.integer.result}"
+  name_postfix = "ex-06-bp-${random_integer.integer.result}"
 }

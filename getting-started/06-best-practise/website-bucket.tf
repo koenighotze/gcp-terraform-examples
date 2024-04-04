@@ -6,7 +6,8 @@ resource "google_storage_bucket" "websitecontent" {
   uniform_bucket_level_access = true
   force_destroy               = true
   storage_class               = "REGIONAL"
-  public_access_prevention    = "enforced"
+  #checkov:skip=CKV_GCP_114: Website is public
+  public_access_prevention    = "inherited"
 
   versioning {
     enabled = true
@@ -24,50 +25,16 @@ resource "google_storage_bucket_iam_binding" "public_rule" {
 
   #checkov:skip=CKV_GCP_28: This is a website!
   members = [
-    # "allUsers",
-    "allAuthenticatedUsers"
+    "allUsers"
   ]
 }
 
 resource "google_storage_bucket_object" "bucket_object_index" {
-  name   = "index.html"
-  bucket = google_storage_bucket.websitecontent.name
-  source = "./website/index.html"
+  for_each = toset(["index.html", "404.html"])
 
-  # content_encoding = ""
-  # content_language = ""
+  name   = each.value
+  bucket = google_storage_bucket.websitecontent.name
+  source = "./website/${each.value}"
+
   content_type = "text/html"
 }
-
-resource "google_storage_bucket_object" "bucket_object_error" {
-  name   = "404.html"
-  bucket = google_storage_bucket.websitecontent.name
-  source = "./website/404.html"
-
-  # content_encoding = ""
-  # content_language = ""
-  content_type = "text/html"
-}
-
-# variable "bucket_objects" {
-#   description = "Map of bucket objects"
-#   type        = map(string)
-#   default = {
-#     "index.html" = "./website/index.html"
-#     "404.html"   = "./website/404.html"
-#   }
-# }
-
-# resource "google_storage_bucket_object" "bucket_object" {
-#   for_each = var.bucket_objects
-
-#   name   = each.key
-#   bucket = google_storage_bucket.websitecontent.name
-#   source = each.value
-
-#   # content_encoding = ""
-#   # content_language = ""
-#   content_type = "text/html"
-# }
-
-
