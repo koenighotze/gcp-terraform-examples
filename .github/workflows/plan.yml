@@ -107,9 +107,6 @@ jobs:
 
     needs:
       - build-matrix
-      - qa
-      - lint
-      - compliance-scan
 
     strategy:
       matrix:
