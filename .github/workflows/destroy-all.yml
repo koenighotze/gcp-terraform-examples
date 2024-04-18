@@ -63,6 +63,8 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2.1.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.8.0"
       - name: Init
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Destroy
