@@ -10,5 +10,3 @@ data "google_compute_machine_types" "machine_types" {
 
 data "google_compute_zones" "available" {
 }
-
-

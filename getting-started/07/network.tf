@@ -8,7 +8,7 @@ resource "google_compute_network" "vpc" {
 resource "google_compute_subnetwork" "instance_subnetwork" {
   name                     = "instance-subnetwork-${local.name_postfix}"
   network                  = google_compute_network.vpc.id
-  ip_cidr_range            = "10.1.0.0/23"
+  ip_cidr_range            = "10.1.1.0/23" # cidrsubnet(var.base_cidr_block, 7, 1) #
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true
 
@@ -19,9 +19,15 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
   }
 }
 
+# locals {
+#   new_prefix = 23
+#   num_subnets = 128
+#   cidr_blocks = [ for i in range(local.num_subnets) : cidrsubnet(var.base_cidr_block, local.new_prefix, i) ]
+# }
+
 resource "google_compute_subnetwork" "proxy_subnetwork" {
   name          = "proxysubnetwork-${local.name_postfix}"
-  ip_cidr_range = "10.2.0.0/23"
+  ip_cidr_range = "10.1.2.0/23" # cidrsubnet(var.base_cidr_block, 7, 2)
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
 
@@ -39,7 +45,7 @@ resource "google_compute_firewall" "firewall" {
   priority  = 1000
   #checkov:skip=CKV_GCP_106:allow everybody to connect
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["webserver"]
+  target_tags   = local.firewall_target_tags
   #checkov:skip=CKV_GCP_2: we need ssh and http
   allow {
     protocol = "tcp"

@@ -19,11 +19,11 @@ sudo apt-get install -y gcsfuse nginx
 
 mkdir -p "$TMP_DIR"
 # shellcheck disable=SC2154
-gcsfuse "${bucket_name}" "$TMP_DIR"
-sudo cp -rvf "$TMP_DIR"/* "$NGINX_DOC_DIR"/
+gcsfuse "${bucket_name}" "$NGINX_DOC_DIR"
+# sudo cp -rvf "$TMP_DIR"/* "$NGINX_DOC_DIR"/
 # shellcheck disable=SC2154
-echo "s,nginx,${hostname}," | sudo sed -e /usr/share/nginx/html/index.html | sudo tee /tmp/index.html > /dev/null
-sudo mv /tmp/index.html "$NGINX_DOC_DIR"/index.html
+# echo "s,nginx,${hostname}," | sudo sed -e /usr/share/nginx/html/index.html | sudo tee /tmp/index.html > /dev/null
+# sudo mv /tmp/index.html "$NGINX_DOC_DIR"/index.html
 
 sudo systemctl start nginx
 sudo systemctl enable nginx

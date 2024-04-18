@@ -4,6 +4,7 @@ resource "google_compute_router" "router" {
   network = google_compute_network.vpc.self_link
 }
 
+# needed for the mig instances to install updates
 resource "google_compute_router_nat" "nat" {
   name   = "nat-${local.name_postfix}"
   router = google_compute_router.router.name

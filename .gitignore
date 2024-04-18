@@ -36,3 +36,6 @@ local.sh
 .vscode
 TODO.txt
 *.swp
+*.tfvars
+.infracost
+.DS_Store

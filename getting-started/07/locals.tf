@@ -1,4 +1,5 @@
 locals {
-  name_postfix = "ex-06-${random_integer.integer.result}"
-  # website_bucket_name = "kh-web-app-${local.name_postfix}"
+  name_postfix = "ex-07-${random_integer.integer.result}"
+
+  firewall_target_tags = ["webserver"]
 }

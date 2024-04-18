@@ -3,7 +3,7 @@ output "lb_url" {
   description = "The URL of the load balancer"
 }
 
-output "bucket_name" {
+output "bucket_url" {
   value = google_storage_bucket.websitecontent.url
 }
 

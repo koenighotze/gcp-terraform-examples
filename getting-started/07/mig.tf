@@ -1,8 +1,12 @@
+locals {
+  number_of_available_zones = length(data.google_compute_zones.available.names)
+}
+
 resource "google_compute_region_instance_group_manager" "mig" {
   name                      = "mig-${local.name_postfix}-${random_integer.mig.id}"
   base_instance_name        = local.name_postfix
-  distribution_policy_zones = slice(data.google_compute_zones.available.names, 0, 2)
-  target_size               = 2
+  distribution_policy_zones = slice(data.google_compute_zones.available.names, 0, min(local.number_of_available_zones, var.mig_pool_size))
+  target_size               = var.mig_pool_size
 
   named_port {
     name = "http"
@@ -12,10 +16,6 @@ resource "google_compute_region_instance_group_manager" "mig" {
   version {
     instance_template = google_compute_region_instance_template.template.self_link
     name              = "instance"
-  }
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 
@@ -60,15 +60,11 @@ resource "google_compute_region_instance_template" "template" {
 
   metadata = {
     #checkov:skip=CKV_GCP_32: We will use ssh keys down the line
-    block-project-ssh-keys = false
+    block-project-ssh-keys = true
   }
 
   metadata_startup_script = templatefile("./scripts/setup-webserver.sh", { bucket_url = google_storage_bucket.websitecontent.url })
 
-  tags           = ["webserver"]
+  tags           = local.firewall_target_tags
   can_ip_forward = false
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
