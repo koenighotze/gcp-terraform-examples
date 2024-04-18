@@ -55,15 +55,15 @@ variable "local_user_email" {
   }
 }
 
-variable "number_of_backend_services_size" {
-  type    = number
-  default = 2
+# variable "number_of_backend_services_size" {
+#   type    = number
+#   default = 2
 
-  validation {
-    condition = var.number_of_backend_services_size >= 1
-    error_message = "Invalid number_of_backend_services_size."
-  }
-}
+#   validation {
+#     condition = var.number_of_backend_services_size >= 1
+#     error_message = "Invalid number_of_backend_services_size."
+#   }
+# }
 
 variable "mig_pool_size" {
   type    = number
@@ -75,12 +75,12 @@ variable "mig_pool_size" {
   }
 }
 
-variable "base_cidr_block" {
-  type = string
-  default = "10.1.0.0/16"
+# variable "base_cidr_block" {
+#   type = string
+#   default = "10.1.0.0/16"
 
-  validation {
-    condition     = can(cidrsubnet(var.base_cidr_block, 0, 0))
-    error_message = "The value given for CIDR block is not a valid CIDR notation."
-  }
-}
+#   validation {
+#     condition     = can(cidrsubnet(var.base_cidr_block, 0, 0))
+#     error_message = "The value given for CIDR block is not a valid CIDR notation."
+#   }
+# }
