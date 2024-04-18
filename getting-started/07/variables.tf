@@ -29,31 +29,31 @@ variable "sa_email" {
   }
 }
 
-variable "debug" {
-  type        = number
-  default     = 0
-  description = "Set to 1 to enable debug resources"
+# variable "debug" {
+#   type        = number
+#   default     = 0
+#   description = "Set to 1 to enable debug resources"
 
-  validation {
-    condition     = var.debug == 0 || var.debug == 1
-    error_message = "Debug must be zero or one."
-  }
-}
+#   validation {
+#     condition     = var.debug == 0 || var.debug == 1
+#     error_message = "Debug must be zero or one."
+#   }
+# }
 
 variable "rebuild_mig" {
   type    = bool
   default = false
 }
 
-variable "local_user_email" {
-  type    = string
-  default = "only@for.debugging"
+# variable "local_user_email" {
+#   type    = string
+#   default = "only@for.debugging"
 
-  validation {
-    condition     = length(var.local_user_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.local_user_email))
-    error_message = "Invalid service account email format. Please provide a valid email address."
-  }
-}
+#   validation {
+#     condition     = length(var.local_user_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.local_user_email))
+#     error_message = "Invalid service account email format. Please provide a valid email address."
+#   }
+# }
 
 # variable "number_of_backend_services_size" {
 #   type    = number
