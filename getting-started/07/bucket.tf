@@ -13,9 +13,9 @@ resource "google_storage_bucket" "websitecontent" {
 }
 
 resource "google_storage_bucket_iam_member" "member" {
-  count = var.debug
+  count  = var.debug
   bucket = google_storage_bucket.websitecontent.name
-  role = "roles/storage.admin"
+  role   = "roles/storage.admin"
   member = "user:${var.local_user_email}"
 }
 

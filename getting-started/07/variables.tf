@@ -3,7 +3,7 @@ variable "project_id" {
   type        = string
 
   validation {
-    condition = length(var.project_id) > 0 && can(regex("[a-z0-9-]{6,30}", var.project_id))
+    condition     = length(var.project_id) > 0 && can(regex("[a-z0-9-]{6,30}", var.project_id))
     error_message = "Project ID must only contain lowercase letters, numbers, and hyphens, and be between 6-30 characters long"
   }
 }
@@ -24,18 +24,18 @@ variable "sa_email" {
   type = string
 
   validation {
-    condition = length(var.sa_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.sa_email))
+    condition     = length(var.sa_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.sa_email))
     error_message = "Invalid service account email format. Please provide a valid email address."
   }
 }
 
 variable "debug" {
-  type = number
-  default = 0
+  type        = number
+  default     = 0
   description = "Set to 1 to enable debug resources"
 
   validation {
-    condition = var.debug == 0 || var.debug == 1
+    condition     = var.debug == 0 || var.debug == 1
     error_message = "Debug must be zero or one."
   }
 }
@@ -46,11 +46,11 @@ variable "rebuild_mig" {
 }
 
 variable "local_user_email" {
-  type = string
+  type    = string
   default = "only@for.debugging"
 
   validation {
-    condition = length(var.local_user_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.local_user_email))
+    condition     = length(var.local_user_email) > 0 && can(regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}", var.local_user_email))
     error_message = "Invalid service account email format. Please provide a valid email address."
   }
 }
@@ -70,7 +70,7 @@ variable "mig_pool_size" {
   default = 2
 
   validation {
-    condition = var.mig_pool_size >= 1
+    condition     = var.mig_pool_size >= 1
     error_message = "Invalid mig_pool_size."
   }
 }
