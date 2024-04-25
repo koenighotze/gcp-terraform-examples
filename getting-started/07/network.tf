@@ -8,7 +8,6 @@ resource "google_compute_network" "vpc" {
 resource "google_compute_subnetwork" "instance_subnetwork" {
   name    = "instance-subnetwork-${local.name_postfix}"
   network = google_compute_network.vpc.id
-  # ip_cidr_range            = "10.2.0.0/23" # cidrsubnet(var.base_cidr_block, 7, 1) #
   ip_cidr_range            = cidrsubnet(var.base_cidr_block, 15, 1)
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true

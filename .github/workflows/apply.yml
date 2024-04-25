@@ -71,3 +71,11 @@ jobs:
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Apply
         run: terraform apply -auto-approve
+      - name: Show Terraform Output as Summary
+        run: |
+          {
+            echo "### Terraform Output";
+            echo "\`\`\`";
+            terraform output;
+            echo "\`\`\`";
+          }  > "${GITHUB_STEP_SUMMARY}"
