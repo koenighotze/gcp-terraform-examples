@@ -39,3 +39,4 @@ TODO.txt
 *.tfvars
 .infracost
 .DS_Store
+plan.out
