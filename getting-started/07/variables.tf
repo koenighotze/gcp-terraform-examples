@@ -75,12 +75,12 @@ variable "mig_pool_size" {
   }
 }
 
-# variable "base_cidr_block" {
-#   type = string
-#   default = "10.1.0.0/16"
+variable "base_cidr_block" {
+  type    = string
+  default = "10.0.0.0/8"
 
-#   validation {
-#     condition     = can(cidrsubnet(var.base_cidr_block, 0, 0))
-#     error_message = "The value given for CIDR block is not a valid CIDR notation."
-#   }
-# }
+  validation {
+    condition     = can(cidrsubnet(var.base_cidr_block, 0, 0))
+    error_message = "The value given for CIDR block is not a valid CIDR notation."
+  }
+}

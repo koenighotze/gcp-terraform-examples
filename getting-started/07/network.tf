@@ -6,9 +6,10 @@ resource "google_compute_network" "vpc" {
 
 #checkov:skip=CKV_GCP_76: no priv google access
 resource "google_compute_subnetwork" "instance_subnetwork" {
-  name                     = "instance-subnetwork-${local.name_postfix}"
-  network                  = google_compute_network.vpc.id
-  ip_cidr_range            = "10.2.0.0/23" # cidrsubnet(var.base_cidr_block, 7, 1) #
+  name    = "instance-subnetwork-${local.name_postfix}"
+  network = google_compute_network.vpc.id
+  # ip_cidr_range            = "10.2.0.0/23" # cidrsubnet(var.base_cidr_block, 7, 1) #
+  ip_cidr_range            = cidrsubnet(var.base_cidr_block, 15, 1)
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true
 
@@ -26,8 +27,9 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
 # }
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
-  name          = "proxysubnetwork-${local.name_postfix}"
-  ip_cidr_range = "10.1.0.0/23" # cidrsubnet(var.base_cidr_block, 7, 2)
+  name = "proxysubnetwork-${local.name_postfix}"
+  # ip_cidr_range = "10.1.0.0/23" # cidrsubnet(var.base_cidr_block, 7, 2)
+  ip_cidr_range = cidrsubnet(var.base_cidr_block, 15, 2)
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
 
