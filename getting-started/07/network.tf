@@ -6,8 +6,8 @@ resource "google_compute_network" "vpc" {
 
 #checkov:skip=CKV_GCP_76: no priv google access
 resource "google_compute_subnetwork" "instance_subnetwork" {
-  name    = "instance-subnetwork-${local.name_postfix}"
-  network = google_compute_network.vpc.id
+  name                     = "instance-subnetwork-${local.name_postfix}"
+  network                  = google_compute_network.vpc.id
   ip_cidr_range            = cidrsubnet(var.base_cidr_block, 15, 1)
   stack_type               = "IPV4_ONLY"
   private_ip_google_access = true
