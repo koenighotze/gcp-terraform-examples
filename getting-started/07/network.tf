@@ -20,7 +20,7 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
 }
 
 resource "google_compute_subnetwork" "proxy_subnetwork" {
-  name = "proxysubnetwork-${local.name_postfix}"
+  name          = "proxysubnetwork-${local.name_postfix}"
   ip_cidr_range = cidrsubnet(var.base_cidr_block, 15, 2)
   network       = google_compute_network.vpc.id
   purpose       = "REGIONAL_MANAGED_PROXY"
