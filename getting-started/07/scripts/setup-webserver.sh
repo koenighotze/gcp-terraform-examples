@@ -20,7 +20,7 @@ sudo cp -rvf "$TMP_DIR"/* "$NGINX_DOC_DIR"/
 
 find "$TMP_DIR" -name "*.html" -print0 | while IFS= read -r -d '' file
 do
-  sudo sed -e "s,instance_name,$HOSTNAME," "$file" | sudo tee "${NGINX_DOC_DIR}/$(basename "$file")" > /dev/null
+  sudo sed -e "s,instance_name,$HOSTNAME," "$file" | sudo tee "$NGINX_DOC_DIR/$(basename "$file")" > /dev/null
 done
 
 sudo systemctl start nginx
