@@ -1,3 +1,10 @@
+locals {
+  website_content = [
+    "index.html",
+    "404.html"
+  ]
+}
+
 resource "google_storage_bucket" "websitecontent" {
   #checkov:skip=CKV_GCP_62: No logging needed
   name     = "website-${local.name_postfix}"
@@ -27,10 +34,7 @@ resource "google_storage_bucket_iam_policy" "bucket_iam_policy" {
 }
 
 resource "google_storage_bucket_object" "bucket_object" {
-  for_each = toset([
-    "index.html",
-    "404.html"
-  ])
+  for_each = toset(local.website_content)
 
   name   = each.value
   bucket = google_storage_bucket.websitecontent.name
