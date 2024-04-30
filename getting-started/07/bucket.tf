@@ -1,13 +1,6 @@
-locals {
-  website_content = [
-    "index.html",
-    "404.html"
-  ]
-}
-
 resource "google_storage_bucket" "websitecontent" {
   #checkov:skip=CKV_GCP_62: No logging needed
-  name     = "website-${local.name_postfix}"
+  name     = local.website_bucket_name
   location = var.region
   # we do not use object level ACLs
   uniform_bucket_level_access = true
@@ -38,7 +31,7 @@ resource "google_storage_bucket_object" "bucket_object" {
 
   name   = each.value
   bucket = google_storage_bucket.websitecontent.name
-  source = "./website/${each.value}"
+  source = "${path.module}/website/${each.value}"
 
   content_type = "text/html"
 }

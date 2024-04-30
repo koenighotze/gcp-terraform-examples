@@ -135,7 +135,7 @@ jobs:
       - name: Terraform Init
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Terraform Plan
-        run: terraform plan -no-color -out=tfplan
+        run: terraform plan -no-color -var git_sha="${{ github.sha }}" -out=tfplan
       - name: Show Terraform Plan as Summary
         run: |
           {

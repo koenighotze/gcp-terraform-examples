@@ -63,7 +63,7 @@ resource "google_compute_region_instance_template" "template" {
     block-project-ssh-keys = true
   }
 
-  metadata_startup_script = templatefile("./scripts/setup-webserver.sh", { bucket_url = google_storage_bucket.websitecontent.url })
+  metadata_startup_script = templatefile("${path.module}/scripts/setup-webserver.sh", { bucket_url = google_storage_bucket.websitecontent.url })
 
   tags           = local.firewall_target_tags
   can_ip_forward = false

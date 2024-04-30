@@ -84,3 +84,21 @@ variable "base_cidr_block" {
     error_message = "The value given for CIDR block is not a valid CIDR notation."
   }
 }
+
+variable "ingress_ip_ranges" {
+  description = "IP ranges allowed to access the website"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "extra_labels" {
+  description = "Extra labels to add to resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "git_sha" {
+  description = "The git sha of the current commit"
+  type        = string
+  default     = "unknown"
+}

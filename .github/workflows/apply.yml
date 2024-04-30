@@ -70,7 +70,7 @@ jobs:
       - name: Init
         run: terraform init -backend-config="bucket=${{ secrets.TERRAFORM_STATE_BUCKET }}"
       - name: Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -var git_sha="${{ github.sha }}" -auto-approve
       - name: Show Terraform Output as Summary
         run: |
           {

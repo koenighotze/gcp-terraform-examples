@@ -14,8 +14,8 @@ resource "google_compute_subnetwork" "instance_subnetwork" {
 
   log_config {
     aggregation_interval = "INTERVAL_10_MIN"
-    flow_sampling        = 0.5
     metadata             = "INCLUDE_ALL_METADATA"
+    flow_sampling        = 0.5
   }
 }
 
@@ -38,7 +38,7 @@ resource "google_compute_firewall" "firewall" {
   direction = "INGRESS"
   priority  = 1000
   #checkov:skip=CKV_GCP_106:allow everybody to connect
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.ingress_ip_ranges
   target_tags   = local.firewall_target_tags
   #checkov:skip=CKV_GCP_2: we need http
   allow {
