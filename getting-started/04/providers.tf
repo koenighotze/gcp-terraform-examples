@@ -6,5 +6,6 @@ provider "google" {
   default_labels = {
     purpose        = "gcp-terraform-training"
     gettingstarted = "04"
+    git_sha        = var.git_sha
   }
 }

@@ -17,3 +17,9 @@ variable "zone" {
 variable "sa_email" {
   type = string
 }
+
+variable "git_sha" {
+  description = "The git sha of the current commit"
+  type        = string
+  default     = "unknown"
+}

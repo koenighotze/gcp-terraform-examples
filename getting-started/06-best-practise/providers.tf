@@ -6,6 +6,7 @@ provider "google" {
   default_labels = {
     purpose        = "gcp-terraform-training"
     gettingstarted = local.name_postfix
+    git_sha        = var.git_sha
   }
 }
 

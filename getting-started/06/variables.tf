@@ -27,7 +27,9 @@ variable "local_user" {
   type = string
 }
 
-# variable "target_size" {
-#   type    = number
-#   default = 2
-# }
+
+variable "git_sha" {
+  description = "The git sha of the current commit"
+  type        = string
+  default     = "unknown"
+}
