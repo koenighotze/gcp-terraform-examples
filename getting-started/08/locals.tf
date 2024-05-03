@@ -4,12 +4,6 @@ locals {
 
   firewall_target_tags = ["webserver"]
 
-  website_bucket_name = lower("website-${local.name_postfix}")
-  website_content = [
-    "index.html",
-    "404.html"
-  ]
-
   default_labels = {
     purpose        = "gcp-terraform-training"
     gettingstarted = local.name_postfix

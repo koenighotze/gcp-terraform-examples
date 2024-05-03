@@ -29,11 +29,6 @@ variable "sa_email" {
   }
 }
 
-variable "rebuild_mig" {
-  type    = bool
-  default = false
-}
-
 variable "mig_pool_size" {
   type    = number
   default = 2

@@ -1,6 +1,6 @@
 resource "google_storage_bucket" "websitecontent" {
   #checkov:skip=CKV_GCP_62: No logging needed
-  name     = var.website_bucket_name
+  name     = lower("website-${var.name_postfix}")
   location = var.region
   # we do not use object level ACLs
   uniform_bucket_level_access = true

@@ -1,10 +1,6 @@
-variable "website_bucket_name" {
-  description = "The name of the bucket to store the website content"
+variable "name_postfix" {
+  description = "A postfix to append to the name of the resources"
   type        = string
-  validation {
-    condition     = can(regex("^[a-z0-9][a-z0-9-.]{1,61}[a-z0-9]$", var.website_bucket_name))
-    error_message = "The website_bucket_name must start and end with a lowercase letter or number, and only contain lowercase letters, numbers, and dashes. It must be between 3 and 63 characters."
-  }
 }
 
 variable "region" {
