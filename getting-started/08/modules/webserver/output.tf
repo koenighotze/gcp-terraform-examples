@@ -1,3 +1,4 @@
-output "backend_service" {
-  value = google_compute_region_backend_service.backend_service
+output "lb_url" {
+  value       = "http://${google_compute_forwarding_rule.lb.ip_address}"
+  description = "The URL of the load balancer"
 }

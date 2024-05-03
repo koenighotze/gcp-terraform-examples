@@ -8,8 +8,8 @@ data "google_compute_machine_types" "machine_types" {
   zone   = var.zone
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name = var.subnet_name
+data "google_compute_subnetwork" "instance_subnetwork" {
+  name = var.instance_subnetwork_name
 }
 
 data "google_compute_network" "vpc" {

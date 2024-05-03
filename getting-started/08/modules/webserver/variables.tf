@@ -8,7 +8,7 @@ variable "vpc_name" {
   type        = string
 }
 
-variable "subnet_name" {
+variable "instance_subnetwork_name" {
   description = "The name of the subnet to deploy resources into"
   type        = string
 }

@@ -12,7 +12,7 @@ resource "google_compute_router_nat" "nat" {
   source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
 
   subnetwork {
-    name                    = data.google_compute_subnetwork.subnetwork.name
+    name                    = data.google_compute_subnetwork.instance_subnetwork.name
     source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
   }
 

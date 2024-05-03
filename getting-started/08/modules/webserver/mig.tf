@@ -38,7 +38,7 @@ resource "google_compute_region_instance_template" "template" {
 
   network_interface {
     network    = data.google_compute_network.vpc.self_link
-    subnetwork = data.google_compute_subnetwork.subnetwork.self_link
+    subnetwork = data.google_compute_subnetwork.instance_subnetwork.self_link
 
     stack_type = "IPV4_ONLY"
 
