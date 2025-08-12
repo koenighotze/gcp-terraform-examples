@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Build directory matrix
         id: build-matrix
         run: |
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run Checkov action
         id: checkov
         uses: bridgecrewio/checkov-action@v12.2873.0
@@ -64,7 +64,7 @@ jobs:
         working-directory: ${{ matrix.project }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: terraform-linters/setup-tflint@v4
         name: Setting up TFLint
         with:
@@ -87,7 +87,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Authenticating
         uses: google-github-actions/auth@v2.1.7
         with:
@@ -120,7 +120,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Authenticating
         uses: google-github-actions/auth@v2.1.7
         with:
